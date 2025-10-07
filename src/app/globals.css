@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
+/* ===== Brand tokens ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-top: #0A0F1A;
+  --bg-bottom: #0E1726;
+  --brand: #3B82F6;
+  --brand-2: #22D3EE;
+  --text: #E5E7EB;
+  --muted: #94A3B8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base */
+html, body { height: 100%; }
+html { color-scheme: dark; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
 }
+
+::selection {
+  background: color-mix(in oklab, var(--brand) 85%, black);
+  color: white;
+}
+
+/* Tailwind utilities를 사용한 커스텀은 import 뒤에 와야 함 */
+@layer base {
+  h1, h2, h3 { @apply tracking-tight text-slate-100; }
+  a { @apply transition-colors; }
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Scrollbars */
+* { scrollbar-width: thin; scrollbar-color: rgba(100,116,139,0.6) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: rgba(148,163,184,0.08); }
+*::-webkit-scrollbar-thumb {
+  background: rgba(100,116,139,0.55);
+  border-radius: 9999px; border: 2px solid transparent; background-clip: content-box;
+}
+
+/* Utilities */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .bg-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(148,163,184,0.12) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .glass { @apply bg-slate-950/40 border border-slate-800/60 backdrop-blur; }
+}
+
+/* Motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ====== Animations / helpers ====== */
+@keyframes shimmer { to { background-position: -200% 0; } }
+.shimmer { background-size: 200% 100%; animation: shimmer 8s linear infinite; }
+
+/* Glass Cube v2 */
+:root { --cube-size: 14rem; --cube-d: calc(var(--cube-size) / 2); }
+.glass-cube { position: relative; width: var(--cube-size); height: var(--cube-size); perspective: 1200px; }
+.glass-cube .cube { position: absolute; inset: 0; transform-style: preserve-3d; animation: spinY 24s linear infinite, spinX 48s linear infinite; }
+.glass-cube .face {
+  position: absolute; inset: 0; margin: auto; height: var(--cube-size); width: var(--cube-size);
+  display: grid; place-items: center; border-radius: 1.25rem;
+  background: linear-gradient(180deg, rgba(59,130,246,.14), rgba(34,211,238,.10)),
+              radial-gradient(60% 60% at 30% 20%, rgba(255,255,255,.12), transparent 60%);
+  border: 1px solid rgba(148,163,184,.28);
+  box-shadow: inset 0 0 0 1px rgba(59,130,246,.10), 0 18px 60px -24px rgba(34,211,238,.35);
+  backdrop-filter: blur(1.5px) saturate(120%);
+  color: rgba(241,245,249,.95); font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  backface-visibility: hidden;
+}
+.glass-cube .face > span { padding: 0 .25rem; text-shadow: 0 1px 1px rgba(0,0,0,.35); }
+.glass-cube .face::after { content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: 0 0 0 1px rgba(34,211,238,.22) inset, 0 0 40px rgba(34,211,238,.12) inset; pointer-events: none; }
+.glass-cube .face--front  { transform: translateZ(var(--cube-d)); }
+.glass-cube .face--back   { transform: rotateY(180deg) translateZ(var(--cube-d)); }
+.glass-cube .face--right  { transform: rotateY(90deg) translateZ(var(--cube-d)); }
+.glass-cube .face--left   { transform: rotateY(-90deg) translateZ(var(--cube-d)); }
+.glass-cube .face--top    { transform: rotateX(90deg) translateZ(var(--cube-d)); }
+.glass-cube .face--bottom { transform: rotateX(-90deg) translateZ(var(--cube-d)); }
+@keyframes spinY { from { transform: rotateY(20deg); } to { transform: rotateY(380deg); } }
+@keyframes spinX { from { transform: rotateX(12deg); } to { transform: rotateX(372deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .glass-cube .cube { animation: none; transform: rotateX(18deg) rotateY(24deg); }
+}
+
