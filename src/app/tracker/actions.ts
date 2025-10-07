@@ -60,18 +60,29 @@ export async function saveNotes(dateStr: string, notes: string) {
   return true;
 }
 
-export async function fetchEventsByDate(dateStr: string) {
-  // dateStr: YYYY-MM-DD (Asia/Seoul 기준)
+export async function getCalendarSources(): Promise<CalSource[]> {
+  const { data, error } = await supabaseAdmin
+    .from('calendar_sources')
+    .select('id, name, color, slug, active')
+    .order('name', { ascending: true });
+  if (error) throw error;
+  return (data as CalSource[]) ?? [];
+}
+
+export async function fetchEventsByDate(dateStr: string, sourceIds?: string[]) {
   const start = new Date(`${dateStr}T00:00:00+09:00`);
   const end   = new Date(`${dateStr}T23:59:59+09:00`);
 
-  const { data, error } = await supabaseAdmin
+  const query = supabaseAdmin
     .from('events')
-    .select('title, start, end, location, all_day')
+    .select('title, start, end, location, all_day, source_id')
     .gte('start', start.toISOString())
     .lte('end', end.toISOString())
     .order('start', { ascending: true });
 
+  if (sourceIds && sourceIds.length > 0) query.in('source_id', sourceIds);
+
+  const { data, error } = await query;
   if (error) throw error;
   return data ?? [];
 }

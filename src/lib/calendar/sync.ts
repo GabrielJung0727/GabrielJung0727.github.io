@@ -1,92 +1,153 @@
 import ical, { VEvent } from 'node-ical';
+import 'dotenv/config';
+import axios from 'axios';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
 type Source = { id: string; ics_url: string; name: string };
 
+// ✅ webcal → https 변환
 function normalizeIcsUrl(url: string) {
-  // webcal:// -> https:// 로 변환하여 fetch
   return url.replace(/^webcal:/i, 'https:');
 }
 
-// 전개 기간(오늘-30일 ~ +90일)만 저장
+// ✅ 동기화 범위: 지난 30일 ~ 앞으로 90일
 function windowRange() {
   const now = new Date();
-  const start = new Date(now); start.setDate(start.getDate() - 30);
-  const end = new Date(now);   end.setDate(end.getDate() + 90);
+  const start = new Date(now);
+  start.setDate(start.getDate() - 30);
+  const end = new Date(now);
+  end.setDate(end.getDate() + 90);
   return { start, end };
 }
 
+// ✅ KST(+9h) 보정 함수
+function toSeoulTime(date: Date | string | number | undefined): Date {
+  if (!date) return new Date();
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
+  return new Date(d.getTime() + 9 * 60 * 60 * 1000);
+}
+
+// =========================
+// 메인 동기화 로직
+// =========================
 export async function syncAllSources() {
-  const { data: sources } = await supabaseAdmin
+  const { data: sources, error } = await supabaseAdmin
     .from('calendar_sources')
     .select('id, ics_url, name')
     .eq('active', true);
 
-  if (!sources?.length) return { synced: 0 };
-
-  let count = 0;
-  for (const s of sources as Source[]) {
-    count += await syncOneSource(s);
+  if (error) {
+    console.error('❌ Supabase error:', error.message);
+    return { synced: 0 };
   }
-  return { synced: count };
+
+  if (!sources?.length) {
+    console.log('⚠️ No active sources found.');
+    return { synced: 0 };
+  }
+
+  console.log(`🌤️ Found ${sources.length} active iCloud sources`);
+
+  let total = 0;
+  for (const src of sources as Source[]) {
+    try {
+      const count = await syncOneSource(src);
+      console.log(`✅ ${src.name}: synced ${count} events`);
+      total += count;
+    } catch (err) {
+      console.error(`⚠️ ${src.name} failed:`, err);
+    }
+  }
+
+  return { synced: total };
 }
 
 export async function syncOneSource(source: Source) {
   const feedUrl = normalizeIcsUrl(source.ics_url);
   const { start, end } = windowRange();
 
-  const data = await ical.async.fromURL(feedUrl, { headers: { 'user-agent': 'gabrieljung.dev sync' } });
-  // data: { [key: string]: CalendarComponent }
-  let upserts = 0;
+  try {
+    const res = await axios.get(feedUrl, {
+      responseType: 'text',
+      headers: {
+        'User-Agent': 'GabrielJung-SyncAgent',
+        Accept: 'text/calendar, text/plain, */*',
+      },
+      maxRedirects: 5,
+      timeout: 15000,
+    });
 
-  for (const k of Object.keys(data)) {
-    const comp = data[k];
-    if (comp.type !== 'VEVENT') continue;
+    const data = ical.parseICS(res.data);
+    let upserts = 0;
 
-    const ev = comp as VEvent;
-    const title = ev.summary || '(no title)';
-    const location = ev.location || null;
-    const uid = ev.uid as string;
+    for (const key of Object.keys(data)) {
+      const comp = data[key];
+      if (!comp || comp.type !== 'VEVENT') continue;
 
-    // allDay & dates
-    const isAllDay = !!(ev.datetype === 'date' || (ev.start && ev.start.isDate));
-    // recurrence 처리
-    if (ev.rrule) {
-      // 반복 이벤트는 window 범위로 전개
-      const between = ev.rrule.between(start, end, true);
-      // EXDATE 고려
-      const exdates = new Set(Object.values(ev.exdate || {}).map((d: any) => +new Date(d as Date)));
-      for (const dt of between) {
-        const dtStart = new Date(dt);
-        if (exdates.has(+dtStart)) continue;
+      const ev = comp as VEvent;
+      const title = ev.summary || '(no title)';
+      const location = ev.location || null;
+      const uid = ev.uid as string;
+      const isAllDay =
+        (ev as any).datetype === 'date' ||
+        (ev.start && (ev.start as any).isDate) ||
+        false;
 
-        // DTSTART와 같은 길이로 종료 계산
-        const duration = ev.end && ev.start ? (+ev.end - +ev.start) : 0;
-        const dtEnd = new Date(+dtStart + duration);
+      // ✅ 반복 이벤트 (rrule)
+      if (ev.rrule) {
+        const between = ev.rrule.between(start, end, true);
+        const exdates = new Set(
+          Object.values(ev.exdate || {}).map((d: any) => +new Date(d as Date))
+        );
 
-        const recurrenceId = dtStart.toISOString();
+        for (const dt of between) {
+          const dtStart = toSeoulTime(dt);
+          if (exdates.has(+dtStart)) continue;
+
+          const duration = ev.end && ev.start ? +ev.end - +ev.start : 0;
+          const dtEnd = toSeoulTime(dtStart.getTime() + duration);
+
+          await upsertEvent({
+            sourceId: source.id,
+            uid,
+            recurrenceId: dtStart.toISOString(),
+            title,
+            location,
+            start: dtStart,
+            end: dtEnd,
+            allDay: isAllDay,
+          });
+
+          upserts++;
+        }
+      } else {
+        // ✅ 단일 이벤트
+        const s = toSeoulTime(ev.start as Date);
+        const e = toSeoulTime(ev.end as Date);
+        if (e < start || s > end) continue;
+
         await upsertEvent({
-          sourceId: source.id, uid, recurrenceId, title, location,
-          start: dtStart, end: dtEnd, allDay: isAllDay
+          sourceId: source.id,
+          uid,
+          recurrenceId: null,
+          title,
+          location,
+          start: s,
+          end: e,
+          allDay: isAllDay,
         });
         upserts++;
       }
-    } else {
-      // 단일 이벤트
-      const s = new Date(ev.start as Date);
-      const e = new Date(ev.end as Date);
-      if (e < start || s > end) continue;
-
-      await upsertEvent({
-        sourceId: source.id, uid, recurrenceId: null, title, location,
-        start: s, end: e, allDay: isAllDay
-      });
-      upserts++;
     }
+
+    return upserts;
+  } catch (err) {
+    console.error(`❌ Sync error for ${source.name}:`, err);
+    return 0;
   }
-  return upserts;
 }
 
+// ✅ Supabase Upsert
 async function upsertEvent(p: {
   sourceId: string;
   uid: string;
@@ -97,15 +158,36 @@ async function upsertEvent(p: {
   end: Date;
   allDay: boolean;
 }) {
-  await supabaseAdmin.from('events').upsert({
-    source_id: p.sourceId,
-    ics_uid: p.uid,
-    recurrence_id: p.recurrenceId,
-    title: p.title,
-    location: p.location,
-    start: p.start.toISOString(),
-    end: p.end.toISOString(),
-    all_day: p.allDay,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: 'source_id,ics_uid,recurrence_id' });
+  const { error } = await supabaseAdmin.from('events').upsert(
+    {
+      source_id: p.sourceId,
+      ics_uid: p.uid,
+      recurrence_id: p.recurrenceId,
+      title: p.title,
+      location: p.location,
+      start: p.start.toISOString(),
+      end: p.end.toISOString(),
+      all_day: p.allDay,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'source_id,ics_uid,recurrence_id' }
+  );
+
+  if (error) console.error('❌ upsertEvent error:', error.message);
 }
+
+// =========================
+// CLI 실행 시 직접 동작
+// =========================
+(async () => {
+  console.log('🔄 Starting calendar sync...');
+
+  try {
+    const { synced } = await syncAllSources();
+    console.log(`✅ Sync complete. Total events updated: ${synced}`);
+  } catch (err) {
+    console.error('❌ Sync failed:', err);
+  }
+
+  console.log('🌙 Done.');
+})();
