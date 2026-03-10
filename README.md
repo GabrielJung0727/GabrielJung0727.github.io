@@ -1,29 +1,29 @@
 # Gabriel Jung Portfolio
 
-GitHub Pages 배포용 정적 포트폴리오입니다.
+This repository contains a single-page portfolio site for Gabriel Jung. The site is designed as a bold, high-contrast personal homepage that introduces background, experience, selected work, testimonials, and contact information in one continuous flow.
 
-## 파일 구성
+## Overview
 
-- `index.html`: GitHub Pages가 바로 읽는 메인 페이지
-- `gabriel-jung-portfolio.html`: 원본 참고 파일
-- `.nojekyll`: GitHub Pages에서 Jekyll 처리 비활성화
+The portfolio is built as a static HTML experience with custom CSS and vanilla JavaScript. It uses a strong visual presentation, animated sections, an interactive project modal, and a hero panel with a profile image to present a modern engineering-focused identity.
 
-## GitHub Pages 배포
+## Main Sections
 
-1. 이 폴더를 GitHub 저장소에 푸시합니다.
-2. 저장소 이름이 `<username>.github.io`면 루트에 있는 `index.html`이 바로 사용자 사이트로 배포됩니다.
-3. 일반 저장소라면 GitHub 저장소의 `Settings > Pages`에서 `Deploy from a branch`를 선택합니다.
-4. 브랜치는 `main`, 폴더는 `/ (root)`를 선택합니다.
-5. 배포가 끝나면 몇 분 뒤 사이트 주소가 생성됩니다.
+- Hero introduction with profile image, headline, and quick stats
+- About section with background, skills, and current interests
+- Experience timeline with tabbed role details
+- Project showcase with modal-based case study previews
+- Testimonials and social proof
+- Contact section with direct links and a mail-based inquiry form
 
-## 배포 전에 바꿀 값
+## Project Structure
 
-- 이메일 주소: `gabriel@jung.dev`
-- GitHub 링크: `https://github.com/gabrieljung`
-- LinkedIn 링크: `https://www.linkedin.com/in/gabrieljung`
-- 경력, 프로젝트, 후기 텍스트: 현재는 샘플 포트폴리오 내용
+- `index.html`: the main portfolio page
+- `public/profile.jpg`: profile image used in the hero section
+- `gabriel-jung-portfolio.html`: original reference version kept for comparison
+- `.nojekyll`: support file for static hosting compatibility
 
-## 메모
+## Notes
 
-- 연락 폼은 GitHub Pages가 정적 호스팅이기 때문에 메일 앱을 여는 방식으로 처리했습니다.
-- 커스텀 도메인을 붙일 예정이면 나중에 `CNAME` 파일만 추가하면 됩니다.
+- The current content mixes real profile links with placeholder portfolio copy in some sections.
+- The contact form is implemented as a mailto-based interaction because the site is fully static.
+- Visual behavior includes custom cursor effects, animated counters, reveal transitions, and a canvas-based hero background.

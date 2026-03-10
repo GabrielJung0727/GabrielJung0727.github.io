@@ -265,21 +265,28 @@ nav[data-menu-open="true"] .nav-menu-icon::after { opacity: 0; }
     radial-gradient(ellipse at 80% 80%, rgba(124,255,203,0.1) 0%, transparent 50%),
     var(--surface);
   display: flex; align-items: flex-end; justify-content: center;
+  position: relative;
 }
 .hero-avatar-placeholder {
   width: 240px; height: 360px;
   background: linear-gradient(180deg, rgba(167,139,250,0.1), rgba(124,255,203,0.05));
   border-radius: 120px 120px 0 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif; font-size: 80px; font-weight: 800;
-  color: rgba(232,228,240,0.08);
-  letter-spacing: -0.04em;
   position: relative; overflow: hidden;
 }
 .hero-avatar-placeholder::after {
-  content: 'GJ';
-  font-family: 'Syne', sans-serif; font-size: 100px; font-weight: 800;
-  color: rgba(232,228,240,0.05);
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6,6,12,0.02) 0%, rgba(6,6,12,0.2) 100%),
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,0.12), transparent 38%);
+  pointer-events: none;
+}
+.hero-avatar-image {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: saturate(1.02) contrast(1.04);
 }
 .hero-location {
   position: absolute; bottom: 20px; left: 20px;
@@ -718,7 +725,7 @@ footer {
     <button type="button" id="nav-menu-button" class="nav-menu-button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
       <span class="nav-menu-icon" aria-hidden="true"></span>
     </button>
-    <a href="mailto:gabriel@jung.dev" class="nav-cta">Hire Me →</a>
+    <a href="mailto:gabrieljung0727@icloud.com" class="nav-cta">Hire Me →</a>
   </div>
   <ul class="nav-links" id="primary-navigation">
     <li><a href="#about">About</a></li>
@@ -771,7 +778,9 @@ footer {
     <div class="hero-visual">
       <div class="hero-photo-frame">
         <div class="hero-photo-bg">
-          <div class="hero-avatar-placeholder"></div>
+          <div class="hero-avatar-placeholder">
+            <img src="public/profile.jpg" alt="Portrait of Gabriel Jung" class="hero-avatar-image">
+          </div>
         </div>
         <div class="hero-location">Seoul, South Korea</div>
         <div class="hero-tag">Full Stack</div>
@@ -1080,7 +1089,7 @@ footer {
     <div class="modal-section-title">Highlights</div>
     <div class="modal-desc" id="modal-highlights"></div>
     <div class="modal-links">
-      <a href="mailto:gabriel@jung.dev?subject=Portfolio%20Case%20Study%20Request" class="modal-link primary">Request Details →</a>
+      <a href="mailto:gabrieljung0727@icloud.com?subject=Portfolio%20Case%20Study%20Request" class="modal-link primary">Request Details →</a>
       <button type="button" class="modal-link ghost" onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -1135,12 +1144,12 @@ footer {
         <h2>Let's build something remarkable.</h2>
         <p>Open to full-time roles, consulting projects, and interesting collaborations. If you have a challenging problem that needs a thoughtful engineer, let's talk.</p>
         <div class="contact-socials">
-          <a href="mailto:gabriel@jung.dev" class="contact-social">
+          <a href="mailto:gabrieljung0727@icloud.com" class="contact-social">
             <span class="contact-social-icon">✉</span>
-            <span class="contact-social-label">gabriel@jung.dev</span>
+            <span class="contact-social-label">gabrieljung0727@icloud.com</span>
             <span class="contact-social-arrow">→</span>
           </a>
-          <a href="https://github.com/gabrieljung" target="_blank" rel="noreferrer" class="contact-social">
+          <a href="https://github.com/GabrielJung0727/" target="_blank" rel="noreferrer" class="contact-social">
             <span class="contact-social-icon">⌥</span>
             <span class="contact-social-label">github.com/gabrieljung</span>
             <span class="contact-social-arrow">→</span>
@@ -1150,7 +1159,7 @@ footer {
             <span class="contact-social-label">linkedin.com/in/gabrieljung</span>
             <span class="contact-social-arrow">→</span>
           </a>
-          <a href="mailto:gabriel@jung.dev?subject=Resume%20Request" class="contact-social">
+          <a href="mailto:gabrieljung0727@icloud.com?subject=Resume%20Request" class="contact-social">
             <span class="contact-social-icon">↓</span>
             <span class="contact-social-label">Request Resume</span>
             <span class="contact-social-arrow">→</span>
@@ -1502,7 +1511,7 @@ contactForm.addEventListener('submit', e => {
   const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
   const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nProject details:\n${message}`);
 
-  window.location.href = `mailto:gabriel@jung.dev?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:gabrieljung0727@icloud.com?subject=${subject}&body=${body}`;
 });
 
 /* =====================
