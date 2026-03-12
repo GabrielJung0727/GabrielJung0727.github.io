@@ -1118,7 +1118,8 @@ footer {
     <div class="modal-desc" id="modal-highlights"></div>
     <div class="modal-links">
       <a id="modal-primary-link" href="mailto:gabrieljung0727@icloud.com?subject=Portfolio%20Case%20Study%20Request" class="modal-link primary">Request Details →</a>
-      <button type="button" class="modal-link ghost" onclick="closeModal()">Close</button>
+      <a id="modal-secondary-link" href="#" class="modal-link ghost" target="_blank" rel="noreferrer">View Site →</a>
+      <button type="button" id="modal-close-link" class="modal-link ghost" onclick="closeModal()">Close</button>
     </div>
   </div>
 </div>
@@ -1429,6 +1430,7 @@ const projects = [
 → Managed service-specific OAuth clients and centralized account flows.
 → Established a reusable identity layer for internal and external APIs.`,
     tags: ['OIDC','OAuth2','SSO','Account Management','API Authentication','AWS','Cloudflare'],
+    siteLink: '#',
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.08), rgba(167,139,250,0.05))'
   },
   {
@@ -1441,6 +1443,7 @@ const projects = [
 → Integrated image storage through NAS for efficient media handling.
 → Deployed search-enabled service infrastructure on AWS with PostgreSQL.`,
     tags: ['PostgreSQL','NAS','AWS','Community Editing','Image Upload','Search'],
+    siteLink: '#',
     bg: 'linear-gradient(135deg, rgba(255,77,109,0.08), rgba(124,255,203,0.04))'
   },
   {
@@ -1453,6 +1456,7 @@ const projects = [
 → Designed core member and board features for everyday community interaction.
 → Positioned the platform as part of a broader shared-service ecosystem.`,
     tags: ['SSO Integration','Membership','Boards','Community Activity','AWS'],
+    siteLink: '#',
     bg: 'linear-gradient(135deg, rgba(255,209,102,0.06), rgba(124,255,203,0.04))'
   },
   {
@@ -1465,6 +1469,7 @@ const projects = [
 → Designed registration and account management flows for program participants.
 → Organized notices and learning resources for operational clarity.`,
     tags: ['Education Platform','Applications','Registration','Account Management','Announcements'],
+    siteLink: '#',
     bg: 'linear-gradient(135deg, rgba(167,139,250,0.08), rgba(124,255,203,0.04))'
   },
   {
@@ -1519,6 +1524,7 @@ const projects = [
 → Delivered analysis results through a user-friendly web interface.
 → Supported predictive models and PDF output for reporting and review.`,
     tags: ['AI Models','Data Upload','Risk Analysis','PDF Reports','Web Platform','AWS'],
+    siteLink: '#',
     bg: 'linear-gradient(135deg, rgba(255,209,102,0.07), rgba(167,139,250,0.05))'
   }
 ];
@@ -1526,6 +1532,8 @@ const projects = [
 function openModal(i) {
   const p = projects[i];
   const primaryLinkEl = document.getElementById('modal-primary-link');
+  const secondaryLinkEl = document.getElementById('modal-secondary-link');
+  const closeLinkEl = document.getElementById('modal-close-link');
   document.getElementById('modal-label').textContent = p.label;
   document.getElementById('modal-title').textContent = p.title;
   document.getElementById('modal-year').textContent = p.subtitle + ' · ' + p.year;
@@ -1543,6 +1551,14 @@ function openModal(i) {
   } else {
     primaryLinkEl.removeAttribute('target');
     primaryLinkEl.removeAttribute('rel');
+  }
+  if (p.primaryLink) {
+    secondaryLinkEl.style.display = 'none';
+    closeLinkEl.style.display = 'inline-flex';
+  } else {
+    secondaryLinkEl.style.display = 'inline-flex';
+    secondaryLinkEl.href = p.siteLink || '#';
+    closeLinkEl.style.display = 'inline-flex';
   }
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('modal-overlay').setAttribute('aria-hidden', 'false');
