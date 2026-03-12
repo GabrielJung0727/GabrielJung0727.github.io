@@ -1443,7 +1443,8 @@ const projects = [
 → Integrated image storage through NAS for efficient media handling.
 → Deployed search-enabled service infrastructure on AWS with PostgreSQL.`,
     tags: ['PostgreSQL','NAS','AWS','Community Editing','Image Upload','Search'],
-    siteLink: 'https://rangufam.netlify.app/wiki/',
+    secondaryLink: 'mailto:gabrieljung0727@icloud.com?subject=Irang%20Wiki%20Preview%20Request',
+    secondaryLabel: 'Request Preview →',
     bg: 'linear-gradient(135deg, rgba(255,77,109,0.08), rgba(124,255,203,0.04))'
   },
   {
@@ -1456,7 +1457,8 @@ const projects = [
 → Designed core member and board features for everyday community interaction.
 → Positioned the platform as part of a broader shared-service ecosystem.`,
     tags: ['SSO Integration','Membership','Boards','Community Activity','AWS'],
-    siteLink: 'https://rangufam.netlify.app/',
+    secondaryLink: 'mailto:gabrieljung0727@icloud.com?subject=Rangu%20Fam%20Preview%20Request',
+    secondaryLabel: 'Request Preview →',
     bg: 'linear-gradient(135deg, rgba(255,209,102,0.06), rgba(124,255,203,0.04))'
   },
   {
@@ -1557,7 +1559,15 @@ function openModal(i) {
     closeLinkEl.style.display = 'inline-flex';
   } else {
     secondaryLinkEl.style.display = 'inline-flex';
-    secondaryLinkEl.href = p.siteLink || '#';
+    secondaryLinkEl.href = p.secondaryLink || p.siteLink || '#';
+    secondaryLinkEl.textContent = p.secondaryLabel || 'View Site →';
+    if ((p.secondaryLink || p.siteLink || '').startsWith('mailto:')) {
+      secondaryLinkEl.removeAttribute('target');
+      secondaryLinkEl.removeAttribute('rel');
+    } else {
+      secondaryLinkEl.target = '_blank';
+      secondaryLinkEl.rel = 'noreferrer';
+    }
     closeLinkEl.style.display = 'inline-flex';
   }
   document.getElementById('modal-overlay').classList.add('open');
