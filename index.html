@@ -145,7 +145,7 @@ nav.scrolled {
 nav[data-menu-open="true"] .nav-menu-icon { transform: rotate(45deg); }
 nav[data-menu-open="true"] .nav-menu-icon::before { transform: rotate(90deg) translateX(-5px); }
 nav[data-menu-open="true"] .nav-menu-icon::after { opacity: 0; }
-.nav-links { display: flex; gap: 36px; list-style: none; margin-left: auto; order: 2; }
+.nav-links { display: flex; gap: 36px; list-style: none; margin-left: auto; margin-right: 40px; order: 2; }
 .nav-links a {
   font-family: 'DM Mono', monospace; font-size: 12px;
   letter-spacing: 0.12em; text-transform: uppercase;
@@ -1117,7 +1117,7 @@ footer {
     <div class="modal-section-title">Highlights</div>
     <div class="modal-desc" id="modal-highlights"></div>
     <div class="modal-links">
-      <a href="mailto:gabrieljung0727@icloud.com?subject=Portfolio%20Case%20Study%20Request" class="modal-link primary">Request Details →</a>
+      <a id="modal-primary-link" href="mailto:gabrieljung0727@icloud.com?subject=Portfolio%20Case%20Study%20Request" class="modal-link primary">Request Details →</a>
       <button type="button" class="modal-link ghost" onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -1477,6 +1477,8 @@ const projects = [
 → Supported real-time oversight for airport gate operations.
 → Structured airport service data for operational visibility and planning.`,
     tags: ['Flight Data','Gate Assignment','Operations','Scheduling','Visualization'],
+    primaryLink: 'https://github.com/GabrielJung0727/',
+    primaryLabel: 'View on GitHub →',
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.08), rgba(255,77,109,0.05))'
   },
   {
@@ -1489,6 +1491,8 @@ const projects = [
 → Built analytics workflows from flight data preprocessing to visualization.
 → Delivered interpretable operational insights through data dashboards.`,
     tags: ['Machine Learning','Data Analysis','Flight Data','Delay Prediction','Visualization'],
+    primaryLink: 'https://github.com/GabrielJung0727/',
+    primaryLabel: 'View on GitHub →',
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.06), rgba(167,139,250,0.06))'
   },
   {
@@ -1501,6 +1505,8 @@ const projects = [
 → Positioned aviation data as a reusable service layer for airport-facing products.
 → Designed the service as an extensible foundation for ICN-specific applications.`,
     tags: ['ICN','Flight Lookup','Gate Information','Delay Information','Airport Services'],
+    primaryLink: 'https://github.com/GabrielJung0727/',
+    primaryLabel: 'View on GitHub →',
     bg: 'linear-gradient(135deg, rgba(255,77,109,0.08), rgba(255,209,102,0.05))'
   },
   {
@@ -1519,6 +1525,7 @@ const projects = [
 
 function openModal(i) {
   const p = projects[i];
+  const primaryLinkEl = document.getElementById('modal-primary-link');
   document.getElementById('modal-label').textContent = p.label;
   document.getElementById('modal-title').textContent = p.title;
   document.getElementById('modal-year').textContent = p.subtitle + ' · ' + p.year;
@@ -1528,6 +1535,15 @@ function openModal(i) {
   document.getElementById('modal-highlights').innerHTML = p.highlights.split('\n').map(l => `<p style="margin-bottom:8px">${l}</p>`).join('');
   const tagsEl = document.getElementById('modal-tags');
   tagsEl.innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  primaryLinkEl.href = p.primaryLink || 'mailto:gabrieljung0727@icloud.com?subject=Portfolio%20Case%20Study%20Request';
+  primaryLinkEl.textContent = p.primaryLabel || 'Request Details →';
+  if (p.primaryLink) {
+    primaryLinkEl.target = '_blank';
+    primaryLinkEl.rel = 'noreferrer';
+  } else {
+    primaryLinkEl.removeAttribute('target');
+    primaryLinkEl.removeAttribute('rel');
+  }
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('modal-overlay').setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
