@@ -598,6 +598,25 @@ footer {
   .hero-left { padding: 40px 24px; }
   .hero-right { display: none; }
   .about-grid, .exp-layout, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .exp-nav {
+    position: static;
+    top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .exp-nav-item {
+    width: auto;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--surface);
+  }
+  .exp-nav-item.active, .exp-nav-item:hover {
+    border-color: rgba(124,255,203,0.35);
+    border-left-color: rgba(124,255,203,0.35);
+  }
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .project-featured { grid-column: span 1; }
   .testimonial-grid { grid-template-columns: 1fr; }
@@ -735,13 +754,20 @@ footer {
     <div class="about-grid">
       <div class="about-text reveal">
         <p>
-          I'm <strong>Gabriel Jung</strong>, a full-stack engineer based in <strong>Seoul, South Korea</strong> with over 6 years of experience building production-grade applications. I specialize in the intersection of great UX and clean, scalable architecture.
+          I'm <strong>Gabriel Jung</strong>, a developer and builder based in <strong>Seoul, South Korea</strong>. 
+          I design and develop web platforms, authentication systems, and data-driven applications, focusing on building services from the ground up.
         </p>
         <p>
-          My work spans from early-stage startups where I've worn every hat, to enterprise teams where I've led frontend architecture for platforms serving millions of users. I care deeply about <strong>performance, accessibility, and developer experience</strong>.
+          I run and develop projects under <strong>DoubleJ</strong>, where I work on multiple platforms including community services, authentication infrastructure, and analytics systems. 
+          My work ranges from backend architecture and cloud infrastructure to building full-stack web applications.
         </p>
         <p>
-          When I'm not writing code, I'm reading about distributed systems, contributing to open source, or exploring the hiking trails around Seoul's mountains.
+          Recently, I’ve been designing hybrid infrastructures combining 
+          <strong>AWS</strong> and on-premise NAS systems to create scalable and cost-efficient platforms. 
+          I’m particularly interested in system architecture, developer tooling, and building products that can grow into real services.
+        </p>
+        <p>
+          Outside of coding, I spend time researching new technologies, improving my systems, and continuously experimenting with new ideas and projects.
         </p>
         <div class="skills-grid">
           <div class="skill-category">

@@ -655,6 +655,25 @@ footer {
   .hero-left { padding: 40px 24px; }
   .hero-right { display: none; }
   .about-grid, .exp-layout, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .exp-nav {
+    position: static;
+    top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .exp-nav-item {
+    width: auto;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--surface);
+  }
+  .exp-nav-item.active, .exp-nav-item:hover {
+    border-color: rgba(124,255,203,0.35);
+    border-left-color: rgba(124,255,203,0.35);
+  }
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .project-featured { grid-column: span 1; }
   .testimonial-grid { grid-template-columns: 1fr; }
@@ -751,7 +770,7 @@ footer {
     </h1>
     <p class="hero-title reveal reveal-delay-2">Full Stack Engineer · <span>Seoul, Korea</span></p>
     <p class="hero-desc reveal reveal-delay-3">
-      I build scalable, performant web applications from pixel-perfect interfaces to robust backend systems. 6+ years turning complex problems into elegant digital solutions.
+      Guided by the motto "Building for Everyone," I devote myself to creating technology that helps more people enjoy a better world.
     </p>
     <div class="hero-buttons reveal reveal-delay-3">
       <a href="#projects" class="btn-primary">View My Work</a>
@@ -802,12 +821,14 @@ footer {
     <span class="marquee-item"><span>Redis</span></span>
     <span class="marquee-item"><span>Docker</span></span>
     <span class="marquee-item"><span>AWS</span></span>
-    <span class="marquee-item"><span>GraphQL</span></span>
+    <span class="marquee-item"><span>C#</span></span>
     <span class="marquee-item"><span>Prisma</span></span>
     <span class="marquee-item"><span>Tailwind CSS</span></span>
     <span class="marquee-item"><span>Kubernetes</span></span>
-    <span class="marquee-item"><span>Go</span></span>
+    <span class="marquee-item"><span>C</span></span>
     <span class="marquee-item"><span>FastAPI</span></span>
+    <span class="marquee-item"><span>C++</span></span>
+    <span class="marquee-item"><span>TypeScript></span></span>
     <!-- duplicate for seamless loop -->
     <span class="marquee-item"><span>React</span></span>
     <span class="marquee-item"><span>Next.js</span></span>
@@ -818,12 +839,14 @@ footer {
     <span class="marquee-item"><span>Redis</span></span>
     <span class="marquee-item"><span>Docker</span></span>
     <span class="marquee-item"><span>AWS</span></span>
-    <span class="marquee-item"><span>GraphQL</span></span>
+    <span class="marquee-item"><span>C#</span></span>
     <span class="marquee-item"><span>Prisma</span></span>
     <span class="marquee-item"><span>Tailwind CSS</span></span>
     <span class="marquee-item"><span>Kubernetes</span></span>
-    <span class="marquee-item"><span>Go</span></span>
+    <span class="marquee-item"><span>C</span></span>
     <span class="marquee-item"><span>FastAPI</span></span>
+    <span class="marquee-item"><span>C++</span></span>
+    <span class="marquee-item"><span>TypeScript></span></span>
   </div>
 </div>
 
@@ -835,13 +858,20 @@ footer {
     <div class="about-grid">
       <div class="about-text reveal">
         <p>
-          I'm <strong>Gabriel Jung</strong>, a full-stack engineer based in <strong>Seoul, South Korea</strong> with over 6 years of experience building production-grade applications. I specialize in the intersection of great UX and clean, scalable architecture.
+          I'm <strong>Gabriel Jung</strong>, a developer and builder based in <strong>Seoul, South Korea</strong>. 
+          I design and develop responsive web platforms, authentication systems, and data-driven applications, focusing on building services that work beautifully across desktop and mobile.
         </p>
         <p>
-          My work spans from early-stage startups where I've worn every hat, to enterprise teams where I've led frontend architecture for platforms serving millions of users. I care deeply about <strong>performance, accessibility, and developer experience</strong>.
+          I run and develop projects under <strong>DoubleJ</strong>, where I work on multiple platforms including community services, authentication infrastructure, and analytics systems. 
+          My work ranges from backend architecture and cloud infrastructure to building full-stack web applications.
         </p>
         <p>
-          When I'm not writing code, I'm reading about distributed systems, contributing to open source, or exploring the hiking trails around Seoul's mountains.
+          Recently, I’ve been designing hybrid infrastructures combining 
+          <strong>AWS</strong> and on-premise NAS systems to create scalable and cost-efficient platforms. 
+          I’m particularly interested in system architecture, developer tooling, and building products that can grow into real services.
+        </p>
+        <p>
+          Outside of coding, I spend time researching new technologies, improving my systems, and continuously experimenting with new ideas and projects.
         </p>
         <div class="skills-grid">
           <div class="skill-category">
@@ -850,6 +880,7 @@ footer {
               <span class="skill-item">React / Next.js</span>
               <span class="skill-item">TypeScript</span>
               <span class="skill-item">CSS / Tailwind</span>
+              <span class="skill-item">Responsive Web Design</span>
               <span class="skill-item">WebGL / Three.js</span>
             </div>
           </div>
@@ -884,10 +915,10 @@ footer {
       </div>
       <div class="about-right reveal reveal-delay-2">
         <div class="about-card">
-          <div class="about-card-title">Seoul National University</div>
-          <div class="about-card-sub">B.Sc. Computer Science & Engineering · 2018</div>
-          <span class="about-card-tag">Summa Cum Laude</span>
-          <span class="about-card-tag">Thesis Award</span>
+          <div class="about-card-title">Kyungbok University (Namyangju Campus)</div>
+          <div class="about-card-sub">Department of Big Data · 2024 - Present</div>
+          <span class="about-card-tag">Data Science</span>
+          <span class="about-card-tag">AI Engineering</span>
         </div>
         <div class="about-card">
           <div class="about-card-title">What I'm excited about</div>
@@ -901,8 +932,8 @@ footer {
         </div>
         <div class="about-card" style="background: rgba(124,255,203,0.04); border-color: rgba(124,255,203,0.2);">
           <div class="about-card-title" style="color: var(--accent);">Currently</div>
-          <div class="about-card-sub">Building in public · Open to full-time & consulting roles</div>
-          <p style="font-size:13px;color:var(--muted);margin-top:8px;">Leading full-stack development for a Series A fintech startup, scaling from 10K to 1M+ users.</p>
+          <div class="about-card-sub">Building AI products across education, forecasting, and public-sector research</div>
+          <p style="font-size:13px;color:var(--muted);margin-top:8px;">Focused on personalized learning systems, predictive AI models, OCR pipelines, and production-ready web platforms.</p>
         </div>
       </div>
     </div>
@@ -916,80 +947,55 @@ footer {
     <h2 class="section-title reveal">Where I've<br>built things.</h2>
     <div class="exp-layout">
       <div class="exp-nav reveal">
-        <button class="exp-nav-item active" onclick="switchExp(0, this)">TossBank</button>
-        <button class="exp-nav-item" onclick="switchExp(1, this)">Kakao Corp</button>
-        <button class="exp-nav-item" onclick="switchExp(2, this)">Naver Labs</button>
-        <button class="exp-nav-item" onclick="switchExp(3, this)">Spoqa</button>
-        <button class="exp-nav-item" onclick="switchExp(4, this)">Freelance</button>
+        <button class="exp-nav-item active" onclick="switchExp(0, this)">Eduscope</button>
+        <button class="exp-nav-item" onclick="switchExp(1, this)">DoubleJ Tech</button>
+        <button class="exp-nav-item" onclick="switchExp(2, this)">MFDS</button>
       </div>
       <div class="exp-items reveal reveal-delay-2">
         <div class="exp-item active">
-          <div class="exp-period">2022 — Present</div>
-          <div class="exp-role">Senior Full Stack Engineer</div>
-          <div class="exp-company">TossBank · Full-Time</div>
-          <div class="exp-desc">Leading frontend architecture and full-stack feature development for Korea's most-downloaded fintech app. Working across web and mobile surfaces to deliver seamless banking experiences.</div>
+          <div class="exp-period">June 2025 - Present</div>
+          <div class="exp-role">AI Engineer</div>
+          <div class="exp-company">Eduscope</div>
+          <div class="exp-desc">Developing AI features for a personalized learning service for elementary school students, with a focus on recommendation systems, OCR workflows, and automated academic analysis.</div>
           <ul class="exp-bullets">
-            <li>Architected a new design system used across 12+ product teams, reducing UI inconsistencies by 70%.</li>
-            <li>Led migration from REST to GraphQL, cutting client-server data transfer by 40%.</li>
-            <li>Built real-time transaction monitoring dashboard processing 50K+ events/second using WebSockets.</li>
-            <li>Mentored a team of 4 junior engineers through bi-weekly code reviews and architecture sessions.</li>
+            <li>Designed personalized content recommendation logic using learning data analysis and student activity patterns.</li>
+            <li>Implemented personalization algorithms based on learning history data to improve individual study experiences.</li>
+            <li>Developed OCR-based AI models for automatic recognition of worksheets and learning materials.</li>
+            <li>Improved image preprocessing and text extraction accuracy, then connected extracted data to the learning system for automated grading and analysis.</li>
           </ul>
           <div class="exp-tags">
-            <span class="exp-tag">React</span><span class="exp-tag">TypeScript</span><span class="exp-tag">GraphQL</span><span class="exp-tag">Node.js</span><span class="exp-tag">AWS</span><span class="exp-tag">Redis</span>
+            <span class="exp-tag">Python</span><span class="exp-tag">OCR</span><span class="exp-tag">AI Models</span><span class="exp-tag">Data Analysis</span><span class="exp-tag">Personalization</span>
           </div>
         </div>
         <div class="exp-item">
-          <div class="exp-period">2020 — 2022</div>
-          <div class="exp-role">Full Stack Engineer</div>
-          <div class="exp-company">Kakao Corporation · Full-Time</div>
-          <div class="exp-desc">Worked on KakaoTalk's web platform and developer tools, contributing to products used by 50M+ daily active users in Korea and Southeast Asia.</div>
+          <div class="exp-period">November 2024 - Present</div>
+          <div class="exp-role">CEO / AI & Web Systems Lead</div>
+          <div class="exp-company">DoubleJ Technologies</div>
+          <div class="exp-desc">Leading AI forecasting model development and web service architecture design for data-driven products, while managing communication in a US-based business environment.</div>
           <ul class="exp-bullets">
-            <li>Built the KakaoTalk Business API portal serving 200K+ developers, improving onboarding time by 60%.</li>
-            <li>Developed OAuth 2.0 integration framework adopted across 8 Kakao products.</li>
-            <li>Optimized core web app bundle size by 45% through code splitting and lazy loading strategies.</li>
+            <li>Designed large-scale data analysis models and built data pipelines to support AI prediction workflows.</li>
+            <li>Improved model performance through iterative tuning, validation, and production feedback loops.</li>
+            <li>Designed backend APIs and optimized database structures for scalable service operations.</li>
+            <li>Built Docker-based deployment environments to automate service delivery and ongoing operations.</li>
+            <li>Handled English-language collaboration, documentation, and partner communication in a US business setting.</li>
           </ul>
           <div class="exp-tags">
-            <span class="exp-tag">Vue.js</span><span class="exp-tag">Java/Spring</span><span class="exp-tag">MySQL</span><span class="exp-tag">Redis</span><span class="exp-tag">GCP</span>
+            <span class="exp-tag">AI Forecasting</span><span class="exp-tag">Backend APIs</span><span class="exp-tag">Databases</span><span class="exp-tag">Docker</span><span class="exp-tag">English Communication</span>
           </div>
         </div>
         <div class="exp-item">
-          <div class="exp-period">2019 — 2020</div>
-          <div class="exp-role">Frontend Engineer</div>
-          <div class="exp-company">Naver Labs · Full-Time</div>
-          <div class="exp-desc">Joined the AI Products team to build user-facing interfaces for Naver's emerging AI research tools, including natural language search and visual AI demos.</div>
+          <div class="exp-period">August 2025 - Present</div>
+          <div class="exp-role">AI Project Developer (Contract)</div>
+          <div class="exp-company">Ministry of Food and Drug Safety (MFDS)</div>
+          <div class="exp-desc">Built an AI-powered prediction system and web platform for forecasting aflatoxin-related bacterial occurrence, covering planning, development, visualization, and deployment.</div>
           <ul class="exp-bullets">
-            <li>Built interactive visualization tools for AI model outputs, improving researcher productivity.</li>
-            <li>Developed WebGL-based 3D map rendering component now used in Naver Maps.</li>
-            <li>Created internal design system for AI products team.</li>
+            <li>Developed AI models for predicting aflatoxin-related bacterial occurrence from domain-specific datasets.</li>
+            <li>Performed end-to-end data preprocessing and model training for reliable prediction outputs.</li>
+            <li>Built a user-friendly website to visualize and operationalize prediction results for stakeholders.</li>
+            <li>Led the project across planning, development, system integration, and deployment.</li>
           </ul>
           <div class="exp-tags">
-            <span class="exp-tag">React</span><span class="exp-tag">WebGL</span><span class="exp-tag">Three.js</span><span class="exp-tag">Python</span>
-          </div>
-        </div>
-        <div class="exp-item">
-          <div class="exp-period">2018 — 2019</div>
-          <div class="exp-role">Software Engineer</div>
-          <div class="exp-company">Spoqa · Full-Time</div>
-          <div class="exp-desc">First engineering job after university. Worked on Dodo Point, a loyalty program SaaS platform for Korean retail stores with 15,000+ merchant clients.</div>
-          <ul class="exp-bullets">
-            <li>Rebuilt the merchant dashboard in React, reducing load time from 8s to under 1.2s.</li>
-            <li>Implemented push notification system reaching 2M+ end users.</li>
-          </ul>
-          <div class="exp-tags">
-            <span class="exp-tag">React</span><span class="exp-tag">Python/Django</span><span class="exp-tag">PostgreSQL</span>
-          </div>
-        </div>
-        <div class="exp-item">
-          <div class="exp-period">2018 — Present</div>
-          <div class="exp-role">Full Stack Consultant</div>
-          <div class="exp-company">Freelance · Part-Time</div>
-          <div class="exp-desc">Building bespoke web applications and technical consulting for startups and SMBs across Korea, Japan, and the US.</div>
-          <ul class="exp-bullets">
-            <li>Delivered 20+ production projects for clients in fintech, e-commerce, and healthcare.</li>
-            <li>Specializing in rapid MVP development and legacy system modernization.</li>
-          </ul>
-          <div class="exp-tags">
-            <span class="exp-tag">Next.js</span><span class="exp-tag">Node.js</span><span class="exp-tag">Various</span>
+            <span class="exp-tag">Machine Learning</span><span class="exp-tag">Data Preprocessing</span><span class="exp-tag">Web Development</span><span class="exp-tag">Visualization</span><span class="exp-tag">Deployment</span>
           </div>
         </div>
       </div>
@@ -1005,69 +1011,91 @@ footer {
     <div class="projects-grid">
 
       <div class="project-card project-featured reveal" onclick="openModal(0)">
-        <div class="project-year">2024</div>
+        <div class="project-year">2025</div>
         <div class="project-num">01</div>
-        <div class="project-title">FlowPay — Real-Time Finance Platform</div>
-        <div class="project-desc">A high-throughput payment orchestration platform handling 100K+ transactions per day. Built with event-driven architecture using Kafka and PostgreSQL, with a React dashboard for real-time monitoring.</div>
+        <div class="project-title">DoubleJ SSO — Unified Identity Platform</div>
+        <div class="project-desc">Integrated authentication platform for the DoubleJ ecosystem, built around OIDC and OAuth2 for single sign-on, account management, and secure API authentication.</div>
         <div class="project-stack">
-          <span class="project-stag">Next.js</span><span class="project-stag">Node.js</span><span class="project-stag">Kafka</span><span class="project-stag">PostgreSQL</span><span class="project-stag">AWS</span>
+          <span class="project-stag">OIDC</span><span class="project-stag">OAuth2</span><span class="project-stag">API Auth</span><span class="project-stag">AWS</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(0);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
       <div class="project-card reveal reveal-delay-1" onclick="openModal(1)">
-        <div class="project-year">2024</div>
+        <div class="project-year">2025</div>
         <div class="project-num">02</div>
-        <div class="project-title">Arcana — AI Content Studio</div>
-        <div class="project-desc">LLM-powered content creation platform with structured generation, version history, and team collaboration features. Processes 1M+ tokens daily.</div>
+        <div class="project-title">Irang Wiki — Community Knowledge Platform</div>
+        <div class="project-desc">Community-driven wiki service with collaborative editing, image uploads, and search, deployed on a PostgreSQL and NAS-backed infrastructure.</div>
         <div class="project-stack">
-          <span class="project-stag">React</span><span class="project-stag">Python</span><span class="project-stag">FastAPI</span><span class="project-stag">Redis</span>
+          <span class="project-stag">PostgreSQL</span><span class="project-stag">NAS</span><span class="project-stag">AWS</span><span class="project-stag">Search</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(1);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
       <div class="project-card reveal reveal-delay-1" onclick="openModal(2)">
-        <div class="project-year">2023</div>
+        <div class="project-year">2025</div>
         <div class="project-num">03</div>
-        <div class="project-title">Kōra — E-Commerce Platform</div>
-        <div class="project-desc">Headless commerce solution for Korean luxury brands expanding globally. Multilingual, multi-currency with a fully custom storefront engine.</div>
+        <div class="project-title">Rangu Fam — Community Service Platform</div>
+        <div class="project-desc">Community platform with member management, boards, and integrated activity features, connected to DoubleJ SSO for unified login.</div>
         <div class="project-stack">
-          <span class="project-stag">Next.js</span><span class="project-stag">GraphQL</span><span class="project-stag">Shopify API</span>
+          <span class="project-stag">SSO</span><span class="project-stag">Community</span><span class="project-stag">Boards</span><span class="project-stag">AWS</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(2);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
       <div class="project-card reveal reveal-delay-2" onclick="openModal(3)">
-        <div class="project-year">2023</div>
+        <div class="project-year">2025</div>
         <div class="project-num">04</div>
-        <div class="project-title">Pulsar — Dev Analytics Dashboard</div>
-        <div class="project-desc">Internal engineering metrics platform tracking DORA metrics, PR velocity, and deployment frequency across 30+ services. Open sourced with 1.2K GitHub stars.</div>
+        <div class="project-title">V(g)ACT — Global Education Program Platform</div>
+        <div class="project-desc">Education and international program platform inspired by Vancouver Global Affairs and Commerce Training, designed to manage program information, applications, and participant accounts.</div>
         <div class="project-stack">
-          <span class="project-stag">React</span><span class="project-stag">Go</span><span class="project-stag">TimescaleDB</span>
+          <span class="project-stag">Education</span><span class="project-stag">Registration</span><span class="project-stag">Accounts</span><span class="project-stag">CMS</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(3);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
       <div class="project-card reveal reveal-delay-2" onclick="openModal(4)">
-        <div class="project-year">2022</div>
+        <div class="project-year">2025</div>
         <div class="project-num">05</div>
-        <div class="project-title">Solstice — 3D Portfolio Builder</div>
-        <div class="project-desc">No-code tool for creatives to build immersive 3D portfolio websites using WebGL. Features a drag-and-drop editor with real-time 3D preview.</div>
+        <div class="project-title">Airport Flight Gate Operations Management System</div>
+        <div class="project-desc">Operational platform for airport gate management, supporting flight schedule control, gate assignment, and real-time oversight of airport operations.</div>
         <div class="project-stack">
-          <span class="project-stag">Three.js</span><span class="project-stag">React</span><span class="project-stag">WebGL</span>
+          <span class="project-stag">Flight Data</span><span class="project-stag">Operations</span><span class="project-stag">Scheduling</span><span class="project-stag">Visualization</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(4);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
       <div class="project-card reveal reveal-delay-3" onclick="openModal(5)">
-        <div class="project-year">2022</div>
+        <div class="project-year">2025</div>
         <div class="project-num">06</div>
-        <div class="project-title">Meridian — Health Data API</div>
-        <div class="project-desc">HIPAA-compliant health data aggregation API serving 40+ healthcare apps. Built with strict security, audit logging, and real-time streaming.</div>
+        <div class="project-title">Airport Delay Congestion Analytics with ML</div>
+        <div class="project-desc">Machine learning analytics platform for predicting airport delays and congestion using operational flight data, forecasting models, and visual dashboards.</div>
         <div class="project-stack">
-          <span class="project-stag">Python</span><span class="project-stag">FastAPI</span><span class="project-stag">PostgreSQL</span><span class="project-stag">Kubernetes</span>
+          <span class="project-stag">Machine Learning</span><span class="project-stag">Data Analysis</span><span class="project-stag">Flight Data</span><span class="project-stag">Dashboards</span>
         </div>
         <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(5);">View Case Study <span class="project-arrow">→</span></button>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3" onclick="openModal(6)">
+        <div class="project-year">2025</div>
+        <div class="project-num">07</div>
+        <div class="project-title">ICN Service — Incheon Airport Data Services</div>
+        <div class="project-desc">Airport-focused service layer for Incheon Airport, providing flight lookup, gate information, and delay status through data-centric service interfaces.</div>
+        <div class="project-stack">
+          <span class="project-stag">ICN</span><span class="project-stag">Flight Lookup</span><span class="project-stag">Gate Info</span><span class="project-stag">Delay Data</span>
+        </div>
+        <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(6);">View Case Study <span class="project-arrow">→</span></button>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3" onclick="openModal(7)">
+        <div class="project-year">2025</div>
+        <div class="project-num">08</div>
+        <div class="project-title">Aflatoxin Prediction and Analysis Platform</div>
+        <div class="project-desc">Contract project for the Korea Food Safety Information Service, delivering aflatoxin risk prediction, data analysis, and PDF reporting through a dedicated web platform.</div>
+        <div class="project-stack">
+          <span class="project-stag">AI Models</span><span class="project-stag">Data Upload</span><span class="project-stag">PDF Reports</span><span class="project-stag">Web Platform</span>
+        </div>
+        <button type="button" class="project-link" onclick="event.stopPropagation(); openModal(7);">View Case Study <span class="project-arrow">→</span></button>
       </div>
 
     </div>
@@ -1102,32 +1130,12 @@ footer {
     <h2 class="section-title reveal">What people<br>say.</h2>
     <div class="testimonial-grid">
       <div class="testimonial-card reveal">
-        <p class="testimonial-text">"Gabriel rewrote our entire frontend in 6 weeks and the results were phenomenal. Load times dropped by half, the codebase became maintainable, and the team's velocity doubled. He doesn't just code — he thinks architecturally."</p>
+        <p class="testimonial-text">There are no public testimonials yet. This section will be updated once client and collaborator reviews are available.</p>
         <div class="testimonial-author">
-          <div class="author-avatar">SL</div>
+          <div class="author-avatar">—</div>
           <div>
-            <div class="author-name">Sophie Lee</div>
-            <div class="author-role">CTO, FlowPay Inc.</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-1">
-        <p class="testimonial-text">"Exceptional attention to detail and a rare ability to bridge design intent with technical execution. Gabriel's work on our design system has become the foundation every new feature is built on. Truly world-class."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background: linear-gradient(135deg, #ff4d6d, #ffd166);">MK</div>
-          <div>
-            <div class="author-name">Marcus Kim</div>
-            <div class="author-role">Head of Product, TossBank</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-2">
-        <p class="testimonial-text">"Working with Gabriel was a master class in full-stack thinking. He identified architectural bottlenecks we'd been living with for years, proposed clear solutions, and executed flawlessly. Would hire in a heartbeat."</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background: linear-gradient(135deg, #7cffcb, #a78bfa);">JN</div>
-          <div>
-            <div class="author-name">Jiho Na</div>
-            <div class="author-role">Engineering Manager, Kakao</div>
+            <div class="author-name">No testimonials yet</div>
+            <div class="author-role">Open for future reviews</div>
           </div>
         </div>
       </div>
@@ -1389,7 +1397,6 @@ function startReveal() {
     entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  // trigger visible ones immediately
   document.querySelectorAll('.reveal').forEach(el => {
     const r = el.getBoundingClientRect();
     if(r.top < window.innerHeight) el.classList.add('visible');
@@ -1413,64 +1420,100 @@ function switchExp(index, btn) {
 ===================== */
 const projects = [
   {
-    label: 'Fintech · Full Stack',
-    title: 'FlowPay',
-    subtitle: 'Real-Time Finance Platform',
-    year: '2024',
-    desc: 'A high-throughput payment orchestration platform handling 100,000+ transactions per day across 12 countries. Built with event-driven architecture for near-zero downtime and maximum reliability.',
-    highlights: '→ Reduced payment processing latency by 65% through optimized event queuing.\n→ Achieved 99.99% uptime across 18 months of production.\n→ Scaled from 1K to 100K daily active users without architectural changes.',
-    tags: ['Next.js','Node.js','Kafka','PostgreSQL','Redis','AWS ECS','Terraform'],
+    label: 'Core Platform · Identity',
+    title: 'DoubleJ SSO',
+    subtitle: 'Unified Identity Platform',
+    year: '2025',
+    desc: 'Central authentication platform for all DoubleJ services, designed around OIDC and OAuth2 to provide single sign-on, account management, OAuth client administration, and API authentication.',
+    highlights: `→ Unified login across Irang Wiki, Rangu Fam, and future DoubleJ services.
+→ Managed service-specific OAuth clients and centralized account flows.
+→ Established a reusable identity layer for internal and external APIs.`,
+    tags: ['OIDC','OAuth2','SSO','Account Management','API Authentication','AWS','Cloudflare'],
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.08), rgba(167,139,250,0.05))'
   },
   {
-    label: 'AI · SaaS',
-    title: 'Arcana',
-    subtitle: 'AI Content Studio',
-    year: '2024',
-    desc: 'An LLM-powered content creation platform with structured generation, collaborative editing, and version history. Integrates with multiple AI providers for flexible, cost-optimized generation workflows.',
-    highlights: '→ Processes 1M+ tokens daily with intelligent caching saving 40% in API costs.\n→ Real-time collaboration powered by CRDTs for conflict-free concurrent editing.\n→ Shipped from idea to 500 paying users in 8 weeks.',
-    tags: ['React','Python','FastAPI','LangChain','PostgreSQL','Redis','Stripe'],
+    label: 'Service Platform · Community Wiki',
+    title: 'Irang Wiki',
+    subtitle: 'Collaborative Knowledge Platform',
+    year: '2025',
+    desc: 'Community-based wiki platform supporting document authoring, image upload, collaborative editing, and search, backed by PostgreSQL, NAS image storage, and AWS-hosted web infrastructure.',
+    highlights: `→ Built document creation and community editing workflows for shared knowledge management.
+→ Integrated image storage through NAS for efficient media handling.
+→ Deployed search-enabled service infrastructure on AWS with PostgreSQL.`,
+    tags: ['PostgreSQL','NAS','AWS','Community Editing','Image Upload','Search'],
     bg: 'linear-gradient(135deg, rgba(255,77,109,0.08), rgba(124,255,203,0.04))'
   },
   {
-    label: 'E-Commerce · Headless',
-    title: 'Kōra',
-    subtitle: 'Luxury Commerce Platform',
-    year: '2023',
-    desc: 'Headless e-commerce solution for Korean luxury brands targeting global markets. Features multilingual storefronts, multi-currency checkout, and a custom CMS for brand storytelling.',
-    highlights: '→ Conversion rate increased 38% after launch vs. previous platform.\n→ Sub-2-second page loads globally using ISR and edge caching.\n→ Supports 8 languages and 15 currencies natively.',
-    tags: ['Next.js','GraphQL','Shopify API','Contentful','Vercel','TypeScript'],
+    label: 'Service Platform · Community',
+    title: 'Rangu Fam',
+    subtitle: 'Member Community Platform',
+    year: '2025',
+    desc: 'Community service platform featuring member systems, boards, and engagement workflows, integrated with DoubleJ SSO for a unified authentication experience.',
+    highlights: `→ Connected community login flows to DoubleJ SSO.
+→ Designed core member and board features for everyday community interaction.
+→ Positioned the platform as part of a broader shared-service ecosystem.`,
+    tags: ['SSO Integration','Membership','Boards','Community Activity','AWS'],
     bg: 'linear-gradient(135deg, rgba(255,209,102,0.06), rgba(124,255,203,0.04))'
   },
   {
-    label: 'DevTools · Open Source',
-    title: 'Pulsar',
-    subtitle: 'Engineering Analytics',
-    year: '2023',
-    desc: 'Internal and open-source engineering metrics platform tracking DORA metrics, PR velocity, deployment frequency, and change failure rate across distributed microservice architectures.',
-    highlights: '→ 1,200+ GitHub stars, 80+ forks in the first 3 months.\n→ Real-time data ingestion from GitHub, Jira, and PagerDuty APIs.\n→ Used by 15+ engineering teams across 5 companies.',
-    tags: ['React','Go','TimescaleDB','Prometheus','Grafana','Docker','K8s'],
+    label: 'Service Platform · Education',
+    title: 'V(g)ACT',
+    subtitle: 'Global Program Management Platform',
+    year: '2025',
+    desc: 'Education and international program platform modeled around global affairs and commerce training operations, supporting program introductions, applications, registration, account management, and announcements.',
+    highlights: `→ Structured program information and application journeys in one platform.
+→ Designed registration and account management flows for program participants.
+→ Organized notices and learning resources for operational clarity.`,
+    tags: ['Education Platform','Applications','Registration','Account Management','Announcements'],
     bg: 'linear-gradient(135deg, rgba(167,139,250,0.08), rgba(124,255,203,0.04))'
   },
   {
-    label: 'Creative Tech · WebGL',
-    title: 'Solstice',
-    subtitle: '3D Portfolio Builder',
-    year: '2022',
-    desc: 'No-code tool for designers and creatives to build immersive 3D portfolio websites. Features a drag-and-drop editor with real-time WebGL preview, custom shader support, and one-click deployment.',
-    highlights: '→ 3,000+ portfolios created in the first 6 months.\n→ Custom shader editor with live preview, inspired by ShaderToy.\n→ Finalist at Product Hunt\'s Golden Kitty Awards 2022.',
-    tags: ['React','Three.js','WebGL','GLSL','Node.js','PostgreSQL','Cloudflare'],
+    label: 'Research · Airport Operations',
+    title: 'Airport Flight Data Platform',
+    subtitle: 'Gate Operations Management System',
+    year: '2025',
+    desc: 'Airport operations management system built to support flight schedule management, gate assignment, and real-time operational monitoring for gate usage and scheduling decisions.',
+    highlights: `→ Managed operational flight schedules and gate allocation workflows.
+→ Supported real-time oversight for airport gate operations.
+→ Structured airport service data for operational visibility and planning.`,
+    tags: ['Flight Data','Gate Assignment','Operations','Scheduling','Visualization'],
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.08), rgba(255,77,109,0.05))'
   },
   {
-    label: 'Healthcare · API',
-    title: 'Meridian',
-    subtitle: 'Health Data API',
-    year: '2022',
-    desc: 'HIPAA-compliant health data aggregation API serving 40+ healthcare applications. Provides real-time data streaming, comprehensive audit logging, and strict access control for sensitive patient data.',
-    highlights: '→ HIPAA, SOC 2 Type II, and GDPR compliant from day one.\n→ Processes 50K+ health records per minute with full audit trails.\n→ Adopted by 3 hospital systems and 40+ health apps.',
-    tags: ['Python','FastAPI','PostgreSQL','Redis','Kubernetes','AWS','OAuth2'],
+    label: 'Research · Machine Learning',
+    title: 'Airport Delay Congestion Analytics',
+    subtitle: 'Delay and Congestion Prediction with ML',
+    year: '2025',
+    desc: 'Machine learning and data analysis project focused on predicting airport delay risk and congestion patterns from flight-related datasets, with visualization for decision support.',
+    highlights: `→ Applied machine learning models to forecast delay and congestion trends.
+→ Built analytics workflows from flight data preprocessing to visualization.
+→ Delivered interpretable operational insights through data dashboards.`,
+    tags: ['Machine Learning','Data Analysis','Flight Data','Delay Prediction','Visualization'],
     bg: 'linear-gradient(135deg, rgba(124,255,203,0.06), rgba(167,139,250,0.06))'
+  },
+  {
+    label: 'Research · Airport Services',
+    title: 'ICN Service',
+    subtitle: 'Incheon Airport Data Service',
+    year: '2025',
+    desc: 'Incheon Airport-focused service concept centered on aviation data access, including flight lookup, gate information, and delay information for airport-related user services.',
+    highlights: `→ Structured core airport service functions around flight, gate, and delay information.
+→ Positioned aviation data as a reusable service layer for airport-facing products.
+→ Designed the service as an extensible foundation for ICN-specific applications.`,
+    tags: ['ICN','Flight Lookup','Gate Information','Delay Information','Airport Services'],
+    bg: 'linear-gradient(135deg, rgba(255,77,109,0.08), rgba(255,209,102,0.05))'
+  },
+  {
+    label: 'External Project · Food Safety AI',
+    title: 'Aflatoxin Prediction Platform',
+    subtitle: 'Risk Analysis and Reporting System',
+    year: '2025',
+    desc: 'AI-powered analysis platform commissioned by the Korea Food Safety Information Service to predict aflatoxin risk in food, provide analytical results, and generate PDF reports through a dedicated web interface.',
+    highlights: `→ Built data upload, prediction, and reporting workflows in one platform.
+→ Delivered analysis results through a user-friendly web interface.
+→ Supported predictive models and PDF output for reporting and review.`,
+    tags: ['AI Models','Data Upload','Risk Analysis','PDF Reports','Web Platform','AWS'],
+    bg: 'linear-gradient(135deg, rgba(255,209,102,0.07), rgba(167,139,250,0.05))'
   }
 ];
 
@@ -1482,9 +1525,9 @@ function openModal(i) {
   document.getElementById('modal-img-bg').style.background = p.bg;
   document.getElementById('modal-img-bg').innerHTML = `<span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;opacity:0.3">${p.title}</span>`;
   document.getElementById('modal-desc').textContent = p.desc;
-  document.getElementById('modal-highlights').innerHTML = p.highlights.split('\n').map(l=>`<p style="margin-bottom:8px">${l}</p>`).join('');
+  document.getElementById('modal-highlights').innerHTML = p.highlights.split('\n').map(l => `<p style="margin-bottom:8px">${l}</p>`).join('');
   const tagsEl = document.getElementById('modal-tags');
-  tagsEl.innerHTML = p.tags.map(t=>`<span class="modal-tag">${t}</span>`).join('');
+  tagsEl.innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('modal-overlay').setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
