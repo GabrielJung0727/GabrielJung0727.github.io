@@ -51,7 +51,6 @@ body {
   cursor: default;
   overflow-x: hidden;
 }
-body.cursor-ready { cursor: none; }
 ::selection { background: var(--accent); color: #000; }
 .skip-link {
   position: fixed; left: 16px; top: 16px; z-index: 100000;
@@ -64,28 +63,6 @@ body.cursor-ready { cursor: none; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
-
-/* ============================================
-   CUSTOM CURSOR
-============================================ */
-#cursor {
-  position: fixed; left: 0; top: 0; width: 12px; height: 12px;
-  background: var(--accent); border-radius: 50%;
-  pointer-events: none; z-index: 99999;
-  transform: translate3d(-50%, -50%, 0);
-  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
-  mix-blend-mode: difference;
-  will-change: transform;
-}
-#cursor-trail {
-  position: fixed; left: 0; top: 0; width: 40px; height: 40px;
-  border: 1px solid rgba(124,255,203,0.3); border-radius: 50%;
-  pointer-events: none; z-index: 99998;
-  transform: translate3d(-50%, -50%, 0);
-  transition: width 0.2s ease, height 0.2s ease;
-  will-change: transform;
-}
-body:hover #cursor { opacity: 1; }
 
 /* ============================================
    LOADER (duoplex inspired)
@@ -720,9 +697,6 @@ footer {
   .modal-links { flex-direction: column; }
   .modal-link { text-align: center; }
 }
-@media (pointer: coarse), (hover: none) {
-  #cursor, #cursor-trail { display: none; }
-}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -1020,10 +994,6 @@ footer {
 
 <!-- FILM GRAIN -->
 <div id="grain" aria-hidden="true"></div>
-
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-trail"></div>
 
 <!-- COMMAND PALETTE (⌘K) -->
 <div id="palette-overlay" role="dialog" aria-modal="true" aria-labelledby="palette-input" aria-hidden="true">
@@ -1569,40 +1539,6 @@ footer {
     num.textContent = pad(Math.floor(pct));
   }, 30);
 })();
-
-/* =====================
-   CURSOR (Ed-inspired)
-===================== */
-const cursor = document.getElementById('cursor');
-const trail = document.getElementById('cursor-trail');
-const supportsCustomCursor = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
-let mx=0,my=0,tx=0,ty=0,cursorRaf=0;
-if (supportsCustomCursor) {
-  document.body.classList.add('cursor-ready');
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    if (!cursorRaf) cursorRaf = requestAnimationFrame(tick);
-  }, { passive: true });
-  function tick() {
-    cursorRaf = 0;
-    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
-    tx += (mx - tx) * 0.18; ty += (my - ty) * 0.18;
-    trail.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
-    if (Math.abs(mx - tx) > 0.5 || Math.abs(my - ty) > 0.5) {
-      cursorRaf = requestAnimationFrame(tick);
-    }
-  }
-  document.querySelectorAll('a, button, .project-card, .exp-nav-item').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '6px'; cursor.style.height = '6px';
-      trail.style.width = '60px'; trail.style.height = '60px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '12px'; cursor.style.height = '12px';
-      trail.style.width = '40px'; trail.style.height = '40px';
-    });
-  });
-}
 
 /* =====================
    NAV SCROLL
