@@ -69,19 +69,21 @@ body.cursor-ready { cursor: none; }
    CUSTOM CURSOR
 ============================================ */
 #cursor {
-  position: fixed; width: 12px; height: 12px;
+  position: fixed; left: 0; top: 0; width: 12px; height: 12px;
   background: var(--accent); border-radius: 50%;
   pointer-events: none; z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
   mix-blend-mode: difference;
+  will-change: transform;
 }
 #cursor-trail {
-  position: fixed; width: 40px; height: 40px;
+  position: fixed; left: 0; top: 0; width: 40px; height: 40px;
   border: 1px solid rgba(124,255,203,0.3); border-radius: 50%;
   pointer-events: none; z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: all 0.15s ease;
+  transform: translate3d(-50%, -50%, 0);
+  transition: width 0.2s ease, height 0.2s ease;
+  will-change: transform;
 }
 body:hover #cursor { opacity: 1; }
 
@@ -120,12 +122,12 @@ nav {
   padding: 22px 48px;
   display: flex; align-items: center; justify-content: space-between;
   background: linear-gradient(to bottom, rgba(6,6,12,0.95), transparent);
-  backdrop-filter: blur(0px);
-  transition: backdrop-filter 0.3s, background 0.3s;
+  transition: background 0.3s;
 }
 nav.scrolled {
-  background: rgba(6,6,12,0.92);
-  backdrop-filter: blur(20px);
+  background: rgba(6,6,12,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
@@ -181,11 +183,6 @@ nav[data-menu-open="true"] .nav-menu-icon::after { opacity: 0; }
   display: grid; grid-template-columns: 1fr 1fr;
   position: relative; overflow: hidden;
   padding-top: 80px;
-}
-#hero-canvas {
-  position: absolute; inset: 0; z-index: 0;
-  width: 100%; height: 100%;
-  opacity: 0.5; display: block;
 }
 .hero-left {
   position: relative; z-index: 2;
@@ -1078,7 +1075,6 @@ footer {
 <main id="main-content">
 <!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
   <div class="hero-left">
     <div class="status-badge reveal">
       <span class="status-dot"></span>
@@ -1580,17 +1576,22 @@ footer {
 const cursor = document.getElementById('cursor');
 const trail = document.getElementById('cursor-trail');
 const supportsCustomCursor = window.matchMedia('(pointer: fine) and (hover: hover)').matches;
-let mx=0,my=0,tx=0,ty=0;
+let mx=0,my=0,tx=0,ty=0,cursorRaf=0;
 if (supportsCustomCursor) {
   document.body.classList.add('cursor-ready');
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx+'px'; cursor.style.top = my+'px';
-  });
-  setInterval(()=>{
-    tx += (mx-tx)*0.15; ty += (my-ty)*0.15;
-    trail.style.left = tx+'px'; trail.style.top = ty+'px';
-  },16);
+    if (!cursorRaf) cursorRaf = requestAnimationFrame(tick);
+  }, { passive: true });
+  function tick() {
+    cursorRaf = 0;
+    cursor.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+    tx += (mx - tx) * 0.18; ty += (my - ty) * 0.18;
+    trail.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
+    if (Math.abs(mx - tx) > 0.5 || Math.abs(my - ty) > 0.5) {
+      cursorRaf = requestAnimationFrame(tick);
+    }
+  }
   document.querySelectorAll('a, button, .project-card, .exp-nav-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '6px'; cursor.style.height = '6px';
@@ -1621,151 +1622,15 @@ document.querySelectorAll('#primary-navigation a').forEach(link => {
 window.addEventListener('resize', () => {
   if (window.innerWidth > 960) setMenuState(false);
 });
+let navScrollTicking = false;
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-/* =====================
-   HERO CANVAS (shader-like gradient blobs + mouse-reactive particles)
-===================== */
-(function() {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let W = 0, H = 0, dpr = 1, particles = [], blobs = [], raf;
-  const mouse = { x: -9999, y: -9999, active: false };
-
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.offsetWidth; H = canvas.offsetHeight;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Floating gradient blobs
-  const blobColors = [
-    'rgba(124,255,203,0.10)',
-    'rgba(167,139,250,0.08)',
-    'rgba(255,77,109,0.06)'
-  ];
-  for (let i = 0; i < 3; i++) {
-    blobs.push({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.22,
-      vy: (Math.random() - 0.5) * 0.22,
-      r: Math.random() * 180 + 240,
-      color: blobColors[i]
-    });
-  }
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * W;
-      this.y = Math.random() * H;
-      this.vx = (Math.random() - 0.5) * 0.28;
-      this.vy = (Math.random() - 0.5) * 0.28;
-      this.r = Math.random() * 1.3 + 0.3;
-      this.baseAlpha = Math.random() * 0.45 + 0.15;
-      this.alpha = this.baseAlpha;
-      this.color = Math.random() > 0.5 ? '124,255,203' : '167,139,250';
-    }
-    update() {
-      if (mouse.active) {
-        const dx = this.x - mouse.x, dy = this.y - mouse.y;
-        const d2 = dx * dx + dy * dy;
-        if (d2 < 18000) {
-          const d = Math.sqrt(d2) || 1;
-          const force = (Math.sqrt(18000) - d) / Math.sqrt(18000);
-          this.x += (dx / d) * force * 3.2;
-          this.y += (dy / d) * force * 3.2;
-          this.alpha = Math.min(1, this.baseAlpha + force * 0.6);
-        } else {
-          this.alpha += (this.baseAlpha - this.alpha) * 0.05;
-        }
-      } else {
-        this.alpha += (this.baseAlpha - this.alpha) * 0.05;
-      }
-      this.x += this.vx; this.y += this.vy;
-      if (this.x < -20) this.x = W + 20;
-      else if (this.x > W + 20) this.x = -20;
-      if (this.y < -20) this.y = H + 20;
-      else if (this.y > H + 20) this.y = -20;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
-      ctx.fill();
-    }
-  }
-  const count = Math.min(180, Math.max(80, Math.floor((W * H) / 9000)));
-  for (let i = 0; i < count; i++) particles.push(new Particle());
-
-  canvas.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-    mouse.active = true;
+  if (navScrollTicking) return;
+  navScrollTicking = true;
+  requestAnimationFrame(() => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+    navScrollTicking = false;
   });
-  canvas.addEventListener('mouseleave', () => { mouse.active = false; });
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    // Drift + paint blobs
-    blobs.forEach(b => {
-      b.x += b.vx; b.y += b.vy;
-      if (b.x < -b.r * 0.5 || b.x > W + b.r * 0.5) b.vx *= -1;
-      if (b.y < -b.r * 0.5 || b.y > H + b.r * 0.5) b.vy *= -1;
-      const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-      grad.addColorStop(0, b.color);
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-    });
-
-    // Connections + particles
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.update();
-      for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j];
-        const dx = p.x - q.x, dy = p.y - q.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < 120) {
-          const a = (1 - d / 120) * 0.28;
-          ctx.strokeStyle = `rgba(124,255,203,${a})`;
-          ctx.lineWidth = 0.6;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.stroke();
-        }
-      }
-      p.draw();
-    }
-
-    // Glow near cursor
-    if (mouse.active) {
-      const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 160);
-      g.addColorStop(0, 'rgba(124,255,203,0.12)');
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, W, H);
-    }
-
-    raf = requestAnimationFrame(draw);
-  }
-  if (reduceMotion) {
-    // Paint single frame, no animation loop
-    particles.forEach(p => p.draw());
-  } else {
-    draw();
-  }
-})();
+}, { passive: true });
 
 /* =====================
    STAT COUNTERS (Ram)
@@ -1878,7 +1743,7 @@ const projects = [
 → Designed registration and account management flows for program participants.
 → Organized notices and learning resources for operational clarity.`,
     tags: ['Education Platform','Applications','Registration','Account Management','Announcements'],
-    siteLink: 'https://vgact.netlify.app/',
+    siteLink: 'https://www.vgact.ca',
     bg: 'linear-gradient(135deg, rgba(167,139,250,0.08), rgba(124,255,203,0.04))'
   },
   {
@@ -2013,19 +1878,26 @@ contactForm.addEventListener('submit', e => {
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.project-card').forEach(card => {
+    let raf = 0, lastE = null;
     card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width;
-      const py = (e.clientY - r.top) / r.height;
-      card.style.setProperty('--mx', (px * 100) + '%');
-      card.style.setProperty('--my', (py * 100) + '%');
-      if (finePointer && !reduceMotion) {
-        const rx = (0.5 - py) * 6;
-        const ry = (px - 0.5) * 6;
-        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-      }
-    });
+      lastE = e;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = card.getBoundingClientRect();
+        const px = (lastE.clientX - r.left) / r.width;
+        const py = (lastE.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        if (finePointer && !reduceMotion) {
+          const rx = (0.5 - py) * 6;
+          const ry = (px - 0.5) * 6;
+          card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+        }
+      });
+    }, { passive: true });
     card.addEventListener('mouseleave', () => {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
       card.style.transform = '';
     });
   });
@@ -2134,13 +2006,20 @@ contactForm.addEventListener('submit', e => {
   if (!window.matchMedia('(pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.querySelectorAll('.magnetic').forEach(el => {
+    let raf = 0, lastE = null;
     el.addEventListener('mousemove', e => {
-      const r = el.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${dx * 0.25}px, ${dy * 0.35}px)`;
-    });
+      lastE = e;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = el.getBoundingClientRect();
+        const dx = lastE.clientX - (r.left + r.width / 2);
+        const dy = lastE.clientY - (r.top + r.height / 2);
+        el.style.transform = `translate(${dx * 0.25}px, ${dy * 0.35}px)`;
+      });
+    }, { passive: true });
     el.addEventListener('mouseleave', () => {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
       el.style.transform = '';
     });
   });
